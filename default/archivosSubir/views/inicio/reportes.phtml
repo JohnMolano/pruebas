@@ -1,0 +1,97 @@
+<header class="headerModulo section-gray" style="background-color: #000000;opacity: 0.8; background-image:url('<?=APP_PAGE_OMOLDS;?>img/gymheader.png');"><meta http-equiv="Content-Type" content="text/html; charset=gb18030">
+          <div class="container">
+            <div class="row">
+              <div class="col-6 pull-right"><img src="<?=APP_PAGE_OMOLDS;?>img/LOGO.png" alt="GYM ADMINISTRADOM" style="width: 150px;" class="img-responsive"></div>
+              <div class="col-6 pull-left">
+                    <h1>Hola <span class="bold"><?= utf8_encode($dataUsu->nombreUsu); ?></span></h1>
+              </div>
+            </div>
+          </div>
+
+</header>
+
+<?php View::content(); ?>
+
+<?php View::partial('gym/nav', false,  array('active'=> $active)) ?>
+
+
+<div class="container clearfix">
+	<div id="usuario" class="tab-pane fade in active">
+         <h3>Reporte</h3>
+        <div class="clearfix" style="margin: 10px;"></div>
+		<div class="col-md-12">
+		<form  action="<?=APP_PAGE_OMOLDS;?>inicio/reporteExcel"  method="POST" id="my_form" >
+		  <div class="form-group row margin">
+			<div class="col-md-12">
+						<div class="col-6">
+							<label for="example-text-input" class="col-2 col-form-label">Año:</label>
+							<select  name="anio" class="form-control" data-validation="required" required>
+									<option value="">A&ntilde;o..</option>
+									<option value="<?= $anio ?>" selected ><?= $anio ?></option>
+									<option value="<?= $anio -1 ?>"  ><?= $anio -1 ?></option>
+									<option value="<?= $anio -2 ?>"  ><?= $anio-2 ?></option>
+									<option value="<?= $anio-3 ?>"  ><?= $anio-3 ?></option>
+									<option value="<?= $anio-4 ?>"  ><?= $anio-4 ?></option>
+									<option value="<?= $anio-5 ?>"  ><?= $anio-5 ?></option>
+									<option value="<?= $anio-6 ?>"  ><?= $anio-6 ?></option>
+									<option value="<?= $anio-7 ?>"  ><?= $anio-7 ?></option>
+									<option value="<?= $anio-8 ?>"  ><?= $anio-8 ?></option>
+									<option value="<?= $anio-9 ?>"  ><?= $anio-9 ?></option>
+									<option value="<?= $anio-10 ?>"  ><?= $anio-10 ?></option>
+							 </select>
+						</div>
+						<div class="col-6">
+							<label for="example-text-input" class="col-2 col-form-label">Mes:</label>
+								<select   name="mes" class="form-control" data-validation="required" required>
+									<option value="">Mes..</option>
+										<option value="01" <?php if($mes == '01'){ echo 'selected'; } ?>>Enero</option>
+										<option value="02" <?php if ($mes == '02'){ echo  'selected';} ?>>Febrero</option>
+										<option value="03" <?php if ($mes == '03'){ echo 'selected';}?>>Marzo</option>
+										<option value="04" <?php if ($mes == '04'){ echo  'selected';} ?>>Abril</option>
+										<option value="05" <?php if ($mes == '05'){ echo  'selected';} ?>>Mayo</option>
+										<option value="06" <?php if ($mes == '06'){ echo  'selected';} ?>>Junio</option>
+										<option value="07" <?php if ($mes == '07'){ echo  'selected';} ?>>Julio</option>
+										<option value="08" <?php if ($mes == '08'){ echo  'selected';} ?>>Agosto</option>
+										<option value="09" <?php if ($mes == '09'){ echo  'selected';} ?>>Septiembre</option>
+										<option value="10" <?php if ($mes == '10'){ echo  'selected';} ?>>Octubre</option>
+										<option value="11" <?php if ($mes == '11'){ echo  'selected';} ?>>Noviembre</option>
+										<option value="12" <?php if ($mes == '12'){ echo  'selected';} ?>>Diciembre</option>
+							  </select>
+						</div>
+						<br/>
+						
+						
+						
+                  
+           </div>
+			<button type="submit" class="btn btn-large  btn-success" style="display: block; width: 100%;">Descargar</button>
+		  </div>
+		 </form>
+		</div>
+      </div>
+</div> 
+
+
+<script>
+	function actualizarIframe() {
+		$("#dataclientes")[0].src = $("#dataclientes")[0].src+'?'+Math.random();    
+	}
+</script>
+
+<footer>
+<div class="container">
+<div class="row copyright">
+  <div class="col-md-6">
+    <p class="roboto"><a href="http://www.omolds.com/home/" target="Omolds"> &copy;2016 OMolds </a></p>
+  </div>
+  <div class="col-md-6">
+    <p class="credit roboto"> Fits Better.</p>
+  </div>
+</div>
+</div>
+</footer>
+
+
+
+
+   

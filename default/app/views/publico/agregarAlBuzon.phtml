@@ -1,0 +1,61 @@
+<header class="headerModulo section-gray" style="background-color: #000000;opacity: 0.8;"><meta http-equiv="Content-Type" content="text/html; charset=gb18030">
+          <div class="container">
+            <div class="row">
+              <div class="col-6 pull-right"><img src="<?=APP_PAGE_OMOLDS;?>img/LOGO.png" alt="Logo StockOM" style="width: 150px;" class="img-responsive"></div>
+              <div class="col-6 pull-left">
+                    <h1>Bienvedido al <span class="bold">GYM</span> tus comentarios son de ayuda para nosotros</h1>
+              </div>
+            </div>
+          </div>
+
+</header>
+
+<?php View::content(); ?>
+
+       
+  <section id="formFiltro">
+    <div class="container clearfix">
+      <div class="row">
+        <div class="col-md-12">
+          <h2 class="heading" style="font-size:30px;">GYMADM<span style="color:#CC004D;">OM</span></h2>
+       </div> 
+        <div class="clearfix" style="margin: 10px;"></div>
+		<div class="col-md-12">
+		<form  action="<?=APP_PAGE_OMOLDS;?>publico/guardaAlBuzon"  method="POST" id="my_form" target="resDataInfo">
+		  <div class="form-group row margin">
+			<label for="example-text-input" class="col-2 col-form-label">Mensaje</label>
+			<div class="col-10">
+				<textarea name="mensaje"  rows="4"  class="form-control" data-validation="required" required>
+				
+				</textarea>
+			</div>
+			<button type="submit" class="btn btn-large  btn-success" style="display: block; width: 100%;">Guardar</button>
+			<div class="col-md-12">
+				<iframe name="resDataInfo" src="<?=APP_PAGE_OMOLDS;?>publico/guardaAlBuzon" style="height: auto; max-width: 100%; width: 100%;" frameborder="0"></iframe>
+			 </div> 
+		  </div>
+		 </form>
+		</div>
+
+      </div>
+    </div>
+  </section>
+  
+<footer>
+<div class="container">
+<div class="row copyright">
+  <div class="col-md-6">
+    <p class="roboto"><a href="http://www.omolds.com/home/" target="Omolds"> &copy;2016 OMolds </a></p>
+  </div>
+  <div class="col-md-6">
+    <p class="credit roboto"> Fits Better.</p>
+  </div>
+</div>
+</div>
+</footer>
+
+
+
+
+
+   

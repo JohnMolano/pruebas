@@ -1,0 +1,44 @@
+<header class="headerModulo section-gray" style="background-color: #000000;opacity: 0.8; background-image:url('<?=APP_PAGE_OMOLDS;?>img/gymheader.png');"><meta http-equiv="Content-Type" content="text/html; charset=gb18030">
+          <div class="container">
+            <div class="row">
+              <div class="col-6 pull-right"><img src="<?=APP_PAGE_OMOLDS;?>img/LOGO.png" alt="GYM ADMINISTRADOM" style="width: 150px;" class="img-responsive"></div>
+              <div class="col-6 pull-left">
+                    <h1>Hola <span class="bold"><?= utf8_encode($dataUsu->nombreUsu); ?></span></h1>
+              </div>
+            </div>
+          </div>
+
+</header>
+
+<?php View::content(); ?>
+
+<?php View::partial('gym/nav', false,  array('active'=> $active)) ?>
+
+
+<div class="container clearfix">
+	<iframe id="dataclientes" src="<?=APP_PAGE_OMOLDS;?>inicio/listadoPromociones" style="height: auto; min-height: 600px; max-width: 100%; width: 100%;" frameborder="0"  onload="autofitIframe(this);"></iframe>
+</div> 
+
+
+<script>
+	function actualizarIframe() {
+		$("#dataclientes")[0].src = $("#dataclientes")[0].src+'?'+Math.random();   
+	}
+</script>
+
+<footer>
+<div class="container">
+<div class="row copyright">
+  <div class="col-md-6">
+    <p class="roboto"><a href="http://www.omolds.com/home/" target="Omolds"> &copy;2016 OMolds </a></p>
+  </div>
+  <div class="col-md-6">
+    <p class="credit roboto"> Fits Better.</p>
+  </div>
+</div>
+</div>
+
+
+
+
+   

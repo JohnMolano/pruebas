@@ -1,0 +1,792 @@
+<?php if(isset($clientes)){?>
+
+<div class="tab-content" style="width:98%;">
+          <div id="usuario" class="tab-pane fade in active">
+            <h3>Clientes</h3>
+            <p>Busque por:</p>
+			<div id="inputBusqueda"></div>
+            <div class="row busqueUsuario" id="inputBusqueda">
+                <div class="col-md-6">
+					 <label for="example-text-input" class="col-2 col-form-label">Nombre:</label>
+					<input class="form-control buscar" id="busque-nombre"  type="text" />
+                </div>
+                <div class="col-md-6">
+					<label for="example-text-input" class="col-2 col-form-label">Cédula:</label>
+                  <input class="form-control buscar" id="busque-cedula" type="number" />
+                </div>
+            </div>
+
+            <div class="row">&nbsp;</div>
+            <div class="row">
+              <div class="col-md-12">
+                  <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                      <div class="row">
+                        <div class="col col-xs-6">
+                          <h3 class="panel-title">Listado clientes</h3>
+                        </div>
+                        <div class="col col-xs-6 text-right">
+                          <button type="button" class="btn btn-sm btn-primary btn-create amarillo" data-toggle="modal" data-target="#nuevoUsuario">Nuevo ++</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel-body table-responsive">
+                      <table class="table table-striped table-bordered table-list">
+                        <thead>
+                          <tr>
+							<th>Foto</th>
+							<th>Cédula</th>
+                            <th>Nombre</th>
+                            <th>Correo electrónico</th>
+                            <th>Teléfono</th>
+                            <th>Estado</th>
+                            <th><em class="fa fa-cog"></em></th>
+                          </tr> 
+                        </thead>
+							<tbody id="myTable">
+								<?php $totalProductos = 0;?>
+								 <?php foreach($clientes as $campos): ?>
+								  <tr class="<?=($campos->colorLista); ?>">
+								  	<?php if($campos->foto == ''){ ?>
+								  		<td><a  href="#"  data-toggle="modal" data-target="#modalVer-<?=$campos->id; ?>" title="Ver Usuario"><i class="fa fa-picture-o" aria-hidden="true"></i></a></td>
+								  	<?php }else{ ?>
+								  		<td><a href="#"  data-toggle="modal" data-target="#modalVer-<?=$campos->id; ?>" title="Ver Usuario"><img src="data:image\(png|jpg);base64,<?=($campos->foto); ?>" width="50" /></a></td>
+								  	<?php } ?>
+									
+									<td><?=($campos->cedula); ?></td>
+									<td><?=($campos->nombre); ?></td>
+									<td><?=($campos->email); ?></td>
+									<td><?=($campos->telefono); ?>
+										<?php $totalProductos ++;?>
+									</td>
+									<td><?=($campos->activo); ?></td>
+										 <td>
+										 
+										  <a class="btn btn-info <?php if($campos->colorLista == 'danger'){ ?>pulse btn-danger<?php } ?> " href="#"  data-toggle="modal" data-target="#modalPromocion-<?=$campos->id; ?>" title="Promocion Asociada"><i class="fa fa-gift" aria-hidden="true"></i></a>
+										  <a class="btn btn-info" href="#"  data-toggle="modal" data-target="#modalVer-<?=$campos->id; ?>" title="Ver Usuario"><i class="fa fa-eye" aria-hidden="true"></i></a>
+										 <a class="btn btn-info <?php if($campos->foto == ''){ ?>pulse btn-danger<?php } ?> " href="#"  data-toggle="modal" data-target="#modalFoto" title="Foto Usuario" onclick="$('#idUsuarioFoto').val(<?=$campos->id; ?>);"><i class="fa fa-picture-o" aria-hidden="true"></i></a>	
+										<a class="btn btn-info" href="#"  data-toggle="modal" data-target="#modalRutina-<?=$campos->id; ?>" title="Rutina Usuario"><i class="fa fa-snowflake-o" aria-hidden="true"></i></a>		
+										<a class="btn btn-primary" href="#"  data-toggle="modal" data-target="#modalEditar-<?=$campos->id; ?>" title="Editar Usuario"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+										  <a class="btn btn-danger" href="#"  data-toggle="modal" data-target="#modalEliminar-<?=$campos->id; ?>" title="Eliminar Usuario"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+									  </td>
+								  </tr>
+								 <?php endforeach; ?> 
+                               
+
+                              </tbody>
+                      </table>
+                    </div>
+                    <div class="panel-footer">
+                      <div class="row">
+                        
+                        <div class="col col-xs-4">Total de clientes <span style="color:#CC004D;">OM</span> (<span style="color:#CC004D;"><?= $totalProductos ?></span>) 
+                        </div>
+                        <div class="col col-xs-8">
+                          <ul class="pagination hidden-xs pull-right" id="myPager">
+                          </ul>
+                          <ul class="pagination visible-xs pull-right">
+                              <li><a href="#">«</a></li>
+                              <li><a href="#">»</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+</div>
+
+<?php foreach($clientes as $campos): ?>
+			
+				<!-- Modal de Promicion usuario-->
+	        <div id="modalPromocion-<?=$campos->id; ?>" class="modal fade" role="dialog">
+	          <div class="modal-dialog" style="width:60%;">
+	            <!-- Modal content-->
+	            <div class="modal-content">
+	              <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                <h4 class="modal-title">Promoción para <?= ($campos->nombre); ?></h4>
+	              </div>
+					<?php $validaPromo = getPromocionCliente($campos->id, $campos->colorLista); ?>	
+					<?php if($validaPromo){ ?>	
+						<div class="modal-body">
+							<p class="btn-<?=($campos->colorLista); ?>">La promocion del cliente es <span style="color:#CC004D;"><?= getPromocion($validaPromo->idPromocion); ?></span> esta finaliza el  <span style="color:#CC004D;"><?= $validaPromo->fechaFin; ?></span></p>
+							<?php if($campos->colorLista == 'danger'){ ?>
+							 <form id="modalPromocion-alert" method="post" action="<?=APP_PAGE_OMOLDS;?>inicio/guardaPromocionCliente" class="contact-form form" target="PromocionCliente<?=$campos->id; ?>" style="margin-bottom:100px">
+									<p>Selecionar nueva promo para el cliente</p>
+									
+									<input type="hidden" name="idCampo" id="idCampo" value="<?=$campos->id; ?>" required="required" class="form-control">
+									<input type="hidden" name="idPromocionAct" id="idPromocionAct" value="<?=$validaPromo->idPromocion; ?>" required="required" class="form-control">
+									<div class="col-md-3">
+										<select name="idPromocion" required>
+											<option value="">Seleccione</option>
+											<?php foreach($promociones as $promocion): ?>
+												<option value="<?=$promocion->id; ?>"><?=$promocion->nombre; ?></option>
+											<?php endforeach; ?>
+										</select>
+									</div>
+									<div class="col-md-3">
+										<div class="col-md-12"><button type="submit" class="btn btn-default">Actualizar</button></div>
+									</div>
+									<div class="col-md-6">
+										<div class="col-md-8 col-md-offset-2 col-sm-12">
+										<iframe name="PromocionCliente<?=$campos->id; ?>" src="<?=APP_PAGE_OMOLDS;?>inicio/guardaPromocionCliente" style="height: auto; max-width: 100%; width: 100%;" frameborder="0"></iframe>
+									   </div>
+									</div>
+									
+							 </form>
+							<?php } ?>
+						</div>
+						 <div class="modal-footer">
+							<div class="row">
+								
+								<div class="col-md-12">
+									<div class="col-md-6"></div>
+									<div class="col-md-6"><button type="button" class="btn btn-sm btn-primary btn-create amarillo" data-dismiss="modal">Cerrar</button></div>
+								</div>
+							</div>
+						 </div>
+					<?php }else{ ?>	
+						 <form id="modalPromocion-alert" method="post" action="<?=APP_PAGE_OMOLDS;?>inicio/guardaPromocionCliente" class="contact-form form" target="PromocionCliente<?=$campos->id; ?>">
+						  <div class="modal-body">
+							<p>El cliente no esta asociado a ninguna promoción</p>
+							<select name="idPromocion" required>
+								<option value="">Seleccione</option>
+								<?php foreach($promociones as $promocion): ?>
+									<option value="<?=$promocion->id; ?>"><?=$promocion->nombre; ?></option>
+								<?php endforeach; ?>
+							</select>
+						  </div>
+						  <div class="modal-footer">
+							<input type="hidden" name="idCampo" id="idCampo" value="<?=$campos->id; ?>" required="required" class="form-control">
+						
+							<div class="row">
+								<div class="col-md-8">
+									<div class="col-md-8 col-md-offset-2 col-sm-12">
+									<iframe name="PromocionCliente<?=$campos->id; ?>" src="<?=APP_PAGE_OMOLDS;?>inicio/guardaPromocionCliente" style="height: auto; max-width: 100%; width: 100%;" frameborder="0"></iframe>
+								   </div>
+								</div>
+								<div class="col-md-4">
+									<div class="col-md-6"><button type="submit" class="btn btn-default">Guardar</button></div>
+									<div class="col-md-6"><button type="button" class="btn btn-sm btn-primary btn-create amarillo" data-dismiss="modal">Cancelar</button></div>
+								</div>
+							</div>
+						  </div>
+						 </form>
+					
+					<?php } ?>		 
+	            </div>
+	          </div>
+	        </div>
+	       
+			
+			 <!-- Modal Ver-->
+	         <div id="modalVer-<?=$campos->id; ?>" class="modal fade" role="dialog">
+		    <div class="modal-dialog"  style="width:80%;">
+		      <!-- Modal content-->
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h4 class="modal-title"><?= ($campos->nombre); ?></h4>
+		        </div>
+
+				<div class="modal-body">
+				  <div class="row">
+					
+					<div class="col-md-3">
+						<?php if($campos->foto == ''){ ?>
+							<i class="fa fa-picture-o" aria-hidden="true"></i>
+						<?php }else{ ?>
+							<img src="data:image\(png|jpg);base64,<?=($campos->foto); ?>" width="200" />
+						<?php } ?>
+					</div>
+					<div class="col-md-3">
+					  <div class="form-group row margin">
+						<label for="example-text-input" class="col-2 col-form-label">Nombre:</label><br>
+						<label for="example-text-input" class="col-2 col-form-label"><b><?=($campos->nombre); ?></b></label><br>
+					
+						
+						<label for="example-text-input" class="col-2 col-form-label">Teléfono</label><br>
+						<label for="example-text-input" class="col-2 col-form-label"><b><?=($campos->telefono); ?></b></label><br>
+					
+						
+						<label for="example-text-input" class="col-2 col-form-label">Peso Actual:</label><br>
+						<label for="example-text-input" class="col-2 col-form-label"><b><?=($campos->pesoActual); ?></b></label><br>
+					
+						
+						<label for="sel1">Celular Responsable:</label><br>
+						<label for="sel1"><b><?=($campos->celResponsable); ?></label><br>
+						
+					  </div>
+					</div>
+		
+					<div class="col-md-3">
+					  <div class="form-group row margin">
+						<label for="example-text-input" class="col-2 col-form-label">Cédula</label><br>
+						<label for="example-text-input" class="col-2 col-form-label"><b><?=($campos->cedula); ?></b></label><br>
+						
+						
+						<label for="sel1">Celular:</label><br>
+						<label for="sel1"><b><?=($campos->celular); ?></label><br>
+					   
+						
+						<label for="example-text-input" class="col-2 col-form-label">Estatuta Actual:</label><br>
+						<label for="example-text-input" class="col-2 col-form-label"><b><?=($campos->estaturaActual); ?></b></label><br>
+					
+
+						<label for="example-text-input" class="col-2 col-form-label">Parentesco:</label><br>
+						<label for="example-text-input" class="col-2 col-form-label"><b><?=($campos->parentesco); ?></b></label><br>
+						
+					  
+					  </div>
+					  
+					</div>
+
+					 <div class="col-md-3">
+					  <div class="form-group row margin">
+						<label for="example-text-input" class="col-2 col-form-label">Correo Electrónico:</label><br>
+						<label for="example-text-input" class="col-2 col-form-label"><b><?=($campos->email); ?></b></label><br>
+					
+						
+						<label for="example-text-input" class="col-2 col-form-label">Fecha Nacimiento</label><br>
+						<label for="example-text-input" class="col-2 col-form-label"><b><?=($campos->fechaNacimiento); ?></b></label><br>
+					
+						
+					
+						<label for="example-text-input" class="col-2 col-form-label">Responsable:</label><br>
+						<label for="example-text-input" class="col-2 col-form-label"><b><?=($campos->responsable); ?></b></label><br>
+						
+					  
+					  </div>
+					  
+					</div>
+					
+				</div>
+	
+			  </div>
+					
+		        
+		      </div>
+		    </div>
+			
+		  </div>
+	       
+			
+				<!-- Modal de Rutina usuario-->
+	        <div id="modalRutina-<?=$campos->id; ?>" class="modal fade" role="dialog">
+	          <div class="modal-dialog" style="width:60%;">
+	            <!-- Modal content-->
+	            <div class="modal-content">
+	              <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                <h4 class="modal-title">Rutina para <?= ($campos->nombre); ?></h4>
+	              </div>
+					<?php $validaRutina = getRutinaCliente($campos->id); ?>	
+					
+						 <form id="modalRutina-alert" method="post" action="<?=APP_PAGE_OMOLDS;?>inicio/guardaRutinaCliente" class="contact-form form" target="RutinaCliente<?=$campos->id; ?>">
+						  <div class="modal-body">
+							<?php if($validaRutina){ ?>	
+								<p>El cliente desde <span style="color:#CC004D;"><?= $validaRutina->fechaInicio ?></span> está trabajando <span style="color:#CC004D;"><?= $validaRutina->queTrabaja ?></span>, <br> <span style="color:#CC004D;"><?= $validaRutina->repeticiones ?></span> curcuitos de <span style="color:#CC004D;"><?= $validaRutina->cantidadPorRepeticion ?></span> repeticiones cada una y  finaliza el  <span style="color:#CC004D;"><?= $validaPromo->fechaFin; ?></span></p>
+							<?php } ?>	
+							<br>
+							<h4>Cambiar rutina</h4>
+							
+							<div class="col-10">
+								<label for="example-text-input" class="col-2 col-form-label">Rutina:</label>
+								<select name="idRutina" required>
+									<option value="">Seleccione</option>
+									<?php foreach($rutinas as $rutina): ?>
+										<option value="<?=$rutina->id; ?>"><?=$rutina->nombre; ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+							<div class="col-10">
+								<label for="example-text-input" class="col-2 col-form-label">Fecha Inicio:</label>
+								 <input  name="fechaInicio"  type="text" min="3" class="form-control datepickerIni" data-validation="required" data-validation-format="yyyy/mm/dd"  required>
+							</div>
+							<div class="col-10">
+								<label for="example-text-input" class="col-2 col-form-label">Fecha Fin:</label>
+								 <input  name="fechaFin"  type="text" min="3" class="form-control datepickerFin" data-validation="required" data-validation-format="yyyy/mm/dd"  required>
+							</div>
+							
+							 
+						  </div>
+						  <div class="modal-footer">
+							<input type="hidden" name="idCampo" id="idCampo" value="<?=$campos->id; ?>" required="required" class="form-control">
+						
+							<div class="row">
+								<div class="col-md-8">
+									<div class="col-md-8 col-md-offset-2 col-sm-12">
+									<iframe name="RutinaCliente<?=$campos->id; ?>" src="<?=APP_PAGE_OMOLDS;?>inicio/guardaRutinaCliente" style="height: auto; max-width: 100%; width: 100%;" frameborder="0"></iframe>
+								   </div>
+								</div>
+								<div class="col-md-4">
+									<div class="col-md-6"><button type="submit" class="btn btn-default">Guardar</button></div>
+									<div class="col-md-6"><button type="button" class="btn btn-sm btn-primary btn-create amarillo" data-dismiss="modal">Cancelar</button></div>
+								</div>
+							</div>
+						  </div>
+						 </form>
+					
+					 
+	            </div>
+	          </div>
+	        </div>
+			
+	        <!-- Modal Editar-->
+	        <form id="edit-alert" method="post" action="<?=APP_PAGE_OMOLDS;?>inicio/editarCliente" class="contact-form form" target="resUpdate<?=$campos->id; ?>">
+	        <div id="modalEditar-<?=$campos->id; ?>" class="modal fade" role="dialog">
+		    <div class="modal-dialog"  style="width:80%;">
+		      <!-- Modal content-->
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h4 class="modal-title"><?= ($campos->nombre); ?></h4>
+		        </div>
+
+				<div class="modal-body">
+				  <div class="row">
+					<div class="col-md-1">&nbsp;</div>
+					<div class="col-md-3">
+					  <div class="form-group row margin">
+						<label for="example-text-input" class="col-2 col-form-label">Nombre:</label>
+						<div class="col-10">
+							<input id="nombre" name="nombre"  value="<?=($campos->nombre); ?>" type="text" min="3" class="form-control" data-validation="required" required>
+						</div>
+						
+						<label for="example-text-input" class="col-2 col-form-label">Teléfono</label>
+						<div class="col-10">
+							<input id="telefono"  name="telefono"   value="<?=($campos->telefono); ?>" type="tel" min="3" class="form-control" data-validation="required number" required>
+						</div>
+						
+							<label for="example-text-input" class="col-2 col-form-label">Peso Actual:</label>
+						<div class="col-10">
+							<input id="pesoActual" name="pesoActual" value="<?=($campos->pesoActual); ?>"  type="text" min="2" data-validation="required" class="form-control" required>
+						</div>
+						
+						<label for="sel1">Celular Responsable:</label>
+					   <div class="col-10">
+							<input id="celResponsable"  name="celResponsable" value="<?=($campos->celResponsable); ?>" type="tel" min="3" class="form-control"data-validation="required number" required>
+						</div>
+						
+					  </div>
+					</div>
+		
+					<div class="col-md-3">
+					  <div class="form-group row margin">
+						<label for="example-text-input" class="col-2 col-form-label">Cédula</label>
+						<div class="col-10">
+						   <input id="cedula" name="cedula"  value="<?=($campos->cedula); ?>" type="text" min="3" class="form-control" data-validation="required number" required>
+						</div>
+						
+						<label for="sel1">Celular:</label>
+					   <div class="col-10">
+							<input id="celular"  name="celular" value="<?=($campos->celular); ?>"  type="tel" min="3" class="form-control" required>
+						</div>
+						
+						<label for="example-text-input" class="col-2 col-form-label">Estatuta Actual:</label>
+						<div class="col-10">
+							<input id="estaturaActual" name="estaturaActual"  value="<?=($campos->estaturaActual); ?>" type="text" min="2" class="form-control" data-validation="required" required>
+						</div>
+
+						<label for="example-text-input" class="col-2 col-form-label">Parentesco:</label>
+						<div class="col-10">
+							<input id="parentesco" name="parentesco"  value="<?=($campos->parentesco); ?>" type="text" min="2" class="form-control" data-validation="required" required>
+						</div>	
+					  
+					  </div>
+					  
+					</div>
+
+					 <div class="col-md-3">
+					  <div class="form-group row margin">
+						<label for="example-text-input" class="col-2 col-form-label">Correo Electrónico:</label>
+						<div class="col-10">
+							<input id="email" name="email"  value="<?=($campos->email); ?>" type="email" min="3" class="form-control" data-validation="required email" required>
+						</div>
+						
+						<label for="example-text-input" class="col-2 col-form-label">Fecha Nacimiento</label>
+						<div class="col-10">
+						   <input  name="fechaNacimiento" value="<?=($campos->fechaNacimiento); ?>"  type="text" min="3" class="form-control datepickerCumple" data-validation="required" data-validation-format="yyyy/mm/dd"  required>
+						</div>
+						
+					
+						<label for="example-text-input" class="col-2 col-form-label">Responsable:</label>
+						<div class="col-10">
+							<input id="responsable" name="responsable" value="<?=($campos->responsable); ?>"  type="text" min="3" class="form-control" data-validation="required" required>
+						</div>	
+					  
+					  </div>
+					  
+					</div>
+					 <div class="col-md-2">&nbsp;</div>
+				</div>
+				<div class="modal-footer">
+						<input type="hidden" name="idUsuario"  value="<?=$campos->id; ?>" required="required" class="form-control">	
+						<div class="col-md-8 col-md-offset-2 col-sm-12">
+							<iframe name="resUpdate<?=$campos->id; ?>" src="<?=APP_PAGE_OMOLDS;?>inicio/editarCliente" style="height: auto; max-width: 100%; width: 100%;" frameborder="0"></iframe>
+						</div>    
+						<button type="submit" class="btn btn-default">Actualizar</button>
+					</div>
+			  </div>
+					
+		        
+		      </div>
+		    </div>
+			
+		  </div>
+	        </form>
+
+
+	        
+	         <!-- Modal de borrar-->
+	        <form id="eliminar-alert" method="post" action="<?=APP_PAGE_OMOLDS;?>inicio/eliminaCliente" class="contact-form form" target="resDelete<?=$campos->id; ?>">
+	        <div id="modalEliminar-<?=$campos->id; ?>" class="modal fade" role="dialog">
+	          <div class="modal-dialog" style="width:60%;">
+	            <!-- Modal content-->
+	            <div class="modal-content">
+	              <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                <h4 class="modal-title">Borrar <?= ($campos->nombre); ?></h4>
+	              </div>
+	              <div class="modal-body">
+	               	<p>Estas seguro de eliminar el cliente</p>
+	              </div>
+	              <div class="modal-footer">
+	              	<input type="hidden" name="idCampo" id="idCampo" value="<?=$campos->id; ?>" required="required" class="form-control">
+					<input type="hidden"  name="idUsuario" required="required" class="form-control" value="<?= $idUsuario ?>">					
+					<div class="row">
+						<div class="col-md-8">
+							<div class="col-md-8 col-md-offset-2 col-sm-12">
+							<iframe name="resDelete<?=$campos->id; ?>" src="<?=APP_PAGE_OMOLDS;?>inicio/eliminaCliente" style="height: auto; max-width: 100%; width: 100%;" frameborder="0"></iframe>
+						   </div>
+						</div>
+						<div class="col-md-4">
+							<div class="col-md-6"><button type="submit" class="btn btn-default">Borrar</button></div>
+							<div class="col-md-6"><button type="button" class="btn btn-sm btn-primary btn-create amarillo" data-dismiss="modal">Cancelar</button></div>
+						</div>
+					</div>
+					
+					
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+	        </form>
+<?php endforeach; ?>
+<?php } ?>
+
+<!-- Foto-->
+<div id="modalFoto" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:60%;">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Foto</h4>
+      </div>
+      <div class="modal-body">
+       	<p>Guarda un registro fotográfico de tu cliente </p>
+       	<div class="row">
+			<button id="start" class="btn btn-default">Activar Camara </button>
+			<button id="capture" class="btn btn-default">Tomar Foto</button>
+			<video autoplay="true" width="90%"></video>
+			<canvas width="200" height="200"></canvas>
+		</div>
+      </div>
+      	
+    </div>
+  </div>
+ 
+</div>			
+<input type="hidden"  id="idUsuarioFoto" required="required" class="form-control" value="0">	
+
+
+<style>
+.margin{
+	margin-left : 5px;
+	margin-right : 5px;
+}
+</style>
+
+
+ <div class="modal fade" id="nuevoUsuario" role="dialog" >
+	<form  action="<?=APP_PAGE_OMOLDS;?>inicio/guardacliente"  method="POST" id="my_form" target="resDataInfo">
+        <div class="modal-dialog" style="width:80%;">
+        
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Cliente | Información Básica</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-1">&nbsp;</div>
+                <div class="col-md-3">
+                  <div class="form-group row margin">
+                    <label for="example-text-input" class="col-2 col-form-label">Nombre:</label>
+                    <div class="col-10">
+                        <input id="nombre" name="nombre" type="text" min="3" class="form-control" data-validation="required" required>
+                    </div>
+                    
+                    <label for="example-text-input" class="col-2 col-form-label">Teléfono</label>
+                    <div class="col-10">
+                        <input id="telefono"  name="telefono"  type="tel" min="3" class="form-control" data-validation="required number" required>
+                    </div>
+					
+						<label for="example-text-input" class="col-2 col-form-label">Peso Actual:</label>
+                    <div class="col-10">
+                        <input id="pesoActual" name="pesoActual"  type="text" min="2" data-validation="required" class="form-control" required>
+                    </div>
+					
+					<label for="sel1">Celular Responsable:</label>
+                   <div class="col-10">
+                        <input id="celResponsable"  name="celResponsable"  type="tel" min="3" class="form-control"data-validation="required number" required>
+                    </div>
+                    
+                  </div>
+                </div>
+    
+                <div class="col-md-3">
+                  <div class="form-group row margin">
+                    <label for="example-text-input" class="col-2 col-form-label">Cédula</label>
+                    <div class="col-10">
+                       <input id="cedula" name="cedula"  type="text" min="3" class="form-control" data-validation="required number" required>
+                    </div>
+					
+					<label for="sel1">Celular:</label>
+                   <div class="col-10">
+                        <input id="celular"  name="celular"  type="tel" min="3" class="form-control" required>
+                    </div>
+					
+					<label for="example-text-input" class="col-2 col-form-label">Estatuta Actual:</label>
+                    <div class="col-10">
+                        <input id="estaturaActual" name="estaturaActual"  type="text" min="2" class="form-control" data-validation="required" required>
+                    </div>
+
+					<label for="example-text-input" class="col-2 col-form-label">Parentesco:</label>
+                    <div class="col-10">
+                        <input id="parentesco" name="parentesco"  type="text" min="2" class="form-control" data-validation="required" required>
+                    </div>	
+                  
+                  </div>
+                  
+                </div>
+
+                 <div class="col-md-3">
+                  <div class="form-group row margin">
+					<label for="example-text-input" class="col-2 col-form-label">Correo Electrónico:</label>
+                    <div class="col-10">
+                        <input id="email" name="email"  type="email" min="3" class="form-control" data-validation="required email" required>
+                    </div>
+                    
+					<label for="example-text-input" class="col-2 col-form-label">Fecha Nacimiento</label>
+                    <div class="col-10">
+                       <input  name="fechaNacimiento"  type="text" min="3" class="form-control datepickerCumple" data-validation="required" data-validation-format="yyyy/mm/dd"  required>
+                    </div>
+					
+				
+					<label for="example-text-input" class="col-2 col-form-label">Responsable:</label>
+                    <div class="col-10">
+                        <input id="responsable" name="responsable"  type="text" min="3" class="form-control" data-validation="required" required>
+                    </div>	
+                  
+                  </div>
+                  
+                </div>
+                 <div class="col-md-2">&nbsp;</div>
+            </div>
+            <div class="modal-footer">
+			  <div class="row">
+					<div class="col-md-8">
+						<div class="col-md-8 col-md-offset-2 col-sm-12">
+							<iframe name="resDataInfo" src="<?=APP_PAGE_OMOLDS;?>inicio/guardacliente" style="height: auto; max-width: 100%; width: 100%;" frameborder="0"></iframe>
+						 </div>  
+					</div>
+					<div class="col-md-4">
+						<div class="col-md-6"> <button type="submit" class="btn btn-success" >Guardar</button></div>
+						<div class="col-md-6"><button type="button" class="btn" data-dismiss="modal">Cerrar</button></div>
+					</div>
+				</div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+	 </form> 
+</div>
+
+
+
+
+
+<script>
+	function actualizarIframe() {
+		$("#dataclientes")[0].src = $("#dataclientes")[0].src;   
+	}
+</script>
+
+ <script>
+	 $( function() {
+			
+			
+			$( ".datepickerCumple" ).datepicker({ 
+				dateFormat: 'yy-mm-dd' ,
+				changeMonth: true,
+				changeYear: true, 
+				monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+				monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+				dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'S&aacute;bado'],
+				dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
+				dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
+				weekHeader: 'Sm',
+				firstDay: 1,
+				yearRange: '-100:+0',
+				onSelect: function (date) {
+					fecha = new Date(date);
+					hoy = new Date();
+					ed = parseInt((hoy - fecha)/365/24/60/60/1000);
+					alert("¡Tiene " + ed + " años!");
+				}
+			}).val();
+			
+			$( ".datepickerIni" ).datepicker({ 
+				dateFormat: 'yy-mm-dd' ,
+				changeMonth: true,
+				changeYear: true, 
+				monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+				monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+				dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'S&aacute;bado'],
+				dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
+				dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
+				weekHeader: 'Sm',
+				firstDay: 1,
+			}).val();
+			
+			$( ".datepickerFin" ).datepicker({ 
+				dateFormat: 'yy-mm-dd' ,
+				changeMonth: true,
+				changeYear: true, 
+				monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+				monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+				dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'S&aacute;bado'],
+				dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
+				dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
+				weekHeader: 'Sm',
+				firstDay: 1,
+			}).val();
+
+			
+			
+			
+			 $.validate({
+				modules : 'date', 
+				validateOnBlur : true, // disable validation when input looses focus
+				scrollToTopOnError : false // Set this property to true if you have a long form
+			});
+			
+			$("#myTable").makeSearchList();
+		});
+	
+		jQuery.fn.makeSearchList = function() { 	
+			input = $('.buscar');	
+			$(input).attr("placeholder","Search here ...");	
+			var list	= $(this);
+			$(input)
+			.change( function () {
+					var filter = $(this).val();	        
+					if(filter) {	        	
+					$("tr",$(list)).hide();
+					  $("tr:Contains(" + filter + ")",$(list)).show();
+					} else {	        	
+						$("tr",$(list)).show();
+					}
+					return false;
+				  })
+				.keyup( function () {	        
+					$(this).change();
+				});	  
+		 
+				// Creamos la pseudo-funcion Contains
+				jQuery.expr[":"].Contains = jQuery.expr.createPseudo(function(arg) {
+					return function( elem ) {
+						return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+					};
+				});
+		 
+		};
+</script>
+
+<script>
+
+var videoObj    = { "video": true },
+    errBack        = function(error){
+        // alert("Error Capturando el video: ", error.code);
+    };
+
+// Pedir permisos al Navegador para usar la Webcam
+if(navigator.getUserMedia){                    // Standard
+    navigator.getUserMedia(videoObj, iniciarWebcam, errBack);
+}else if(navigator.webkitGetUserMedia){        // WebKit
+    navigator.webkitGetUserMedia(videoObj, iniciarWebcam, errBack);
+}else if(navigator.mozGetUserMedia){        // Firefox
+    navigator.mozGetUserMedia(videoObj, iniciarWebcam, errBack);
+};
+
+function iniciarWebcam(stream){
+	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+    window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
+
+	var start = document.querySelector('#start'),
+	    capture = document.querySelector('#capture'),
+	    canvas = document.querySelector('canvas'),
+	    ctx = canvas.getContext('2d'),
+	    video = document.querySelector('video');
+
+	start.addEventListener('click', function () {
+
+	    navigator.getUserMedia({
+	      video: true
+	    }, function (stream) {
+	      var src = window.URL.createObjectURL(stream);
+	      video.src = src;
+	    }, function (e) {
+	      console.log(e);
+	    });
+
+	    capture.addEventListener('click', function () {
+	      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+	      	var dataUrl = canvas.toDataURL();
+			var imagen = dataUrl.replace(/^data:image\/(png|jpg);base64,/, "");
+			var idUsuario = $('#idUsuarioFoto').val();
+			var formData = {idUsuario:idUsuario,foto: imagen};
+			  $.ajax({
+				url : "<?=APP_PAGE_OMOLDS;?>inicio/FotoCliente/",
+				type: "POST",
+				dataType: "json",
+				data : formData,
+				 beforeSend: function(){
+				  console.log('Guardando Foto');
+				},
+				success: function(data, textStatus, jqXHR)
+				{
+				
+				  if(data.idError == 0){
+					   window.top.actualizarIframe();
+				  }else{
+					alert(data.descripcion);
+				  }
+				}
+			  });
+
+	    }, false);
+
+	}, false);
+}
+
+</script>
+  

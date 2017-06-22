@@ -1,0 +1,16 @@
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+	 <div class="navbar-header">
+      <a class="navbar-brand" href="#" style="padding-top: 15px;">GYM</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li <?php if($active=='Clientes'){ ?>class="active"<?php } ?>><a href="<?=APP_PAGE_OMOLDS;?>inicio/index"><i class="fa fa-users" aria-hidden="true"></i> Clientes</a></li>
+	   <li <?php if($active=='Promociones'){ ?>class="active"<?php } ?>><a href="<?=APP_PAGE_OMOLDS;?>inicio/promociones"><i class="fa fa-gift" aria-hidden="true"></i> Promociones</a></li>
+      <li <?php if($active=='Instructores'){ ?>class="active"<?php } ?>><a href="<?=APP_PAGE_OMOLDS;?>inicio/instructores"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Instructores</a></li>
+      <li <?php if($active=='Rutinas'){ ?>class="active"<?php } ?>><a href="<?=APP_PAGE_OMOLDS;?>inicio/rutinas"><i class="fa fa-snowflake-o" aria-hidden="true"></i> Rutinas</a></li>
+      <li <?php if($active=='Gastos'){ ?>class="active"<?php } ?>><a href="<?=APP_PAGE_OMOLDS;?>inicio/gastos"><i class="fa fa-usd" aria-hidden="true"></i> Gastos</a></li>
+	  <li <?php if($active=='Reportes'){ ?>class="active"<?php } ?>><a href="<?=APP_PAGE_OMOLDS;?>inicio/reportes"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Reportes</a></li>
+	  <li <?php if($active=='Buzon'){ ?>class="active"<?php } ?>><a href="<?=APP_PAGE_OMOLDS;?>inicio/buzon"><i class="fa fa-comments-o" aria-hidden="true"></i> Buzón de sugerencias</a></li>
+    </ul>
+  </div>
+</nav>

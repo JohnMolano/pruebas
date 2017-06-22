@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+ <head>
+  <meta charset=<?= APP_CHARSET ?> >
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  	
+  <title>GYMADMOM</title>
+
+	<link href="//www.omolds.com/css/font-awesome.css?2" rel="stylesheet">
+    <link rel="stylesheet" href="<?=APP_PAGE_OMOLDS;?>css/themify-icons.css">
+	<link rel="stylesheet" href="//www.omolds.com/css/themify-icons.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://www.omolds.com/css/kumbia.css">
+	<link rel="stylesheet" href="http://www.omolds.com/css/style.default.css">
+    <link rel="shortcut icon" href="<?=APP_PAGE_OMOLDS;?>favicon.ico?03">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="<?=APP_PAGE_OMOLDS;?>javascript/jquery-1.11.0.min.js"><\/script>')</script>
+	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
+	 <script>
+		 $( function() {
+			 jQuery.datepicker.setDefaults(jQuery.datepicker.regional["es"]);
+			$( ".datepicker" ).datepicker({ 
+				dateFormat: 'yy-mm-dd' ,
+				changeMonth: true,
+				changeYear: true, 
+				monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+				monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+				dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'S&aacute;bado'],
+				dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
+				dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
+				weekHeader: 'Sm',
+				firstDay: 1,
+			}).val();
+			
+			 $.validate({
+				modules : 'date', 
+				validateOnBlur : true, // disable validation when input looses focus
+				scrollToTopOnError : false // Set this property to true if you have a long form
+			});
+		});
+		
+		 function autofitIframe(id){
+		if (!window.opera && document.all && document.getElementById){
+			id.style.height=id.contentWindow.document.body.scrollHeight;
+		  } else if(document.getElementById) {
+			id.style.height=id.contentDocument.body.scrollHeight+100+"px";
+		  }
+		}
+		  
+	 </script>
+	 
+	<style>
+	.panel-default>.panel-heading {
+			background-color: #5cb85c; color:#fff;
+		}
+		@-webkit-keyframes pulse-animation {
+	  0% {
+		opacity: 1;
+		-webkit-transform: scale(1);
+				transform: scale(1);
+	  }
+	  50% {
+		opacity: 0;
+		-webkit-transform: scale(1.5);
+				transform: scale(1.5);
+	  }
+	  100% {
+		opacity: 0;
+		-webkit-transform: scale(1.5);
+				transform: scale(1.5);
+	  }
+	}
+	
+	
+
+	.pulse::before {
+	  content: '';
+	  display: block;
+	  position: absolute;
+	  width: 2.5%;
+	  height: 7.5%;
+	  background-color: inherit;
+	  transition: opacity .3s, -webkit-transform .3s;
+	  transition: opacity .3s, transform .3s;
+	  transition: opacity .3s, transform .3s, -webkit-transform .3s;
+	  -webkit-animation: pulse-animation 1s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+			  animation: pulse-animation 1s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+	  z-index: 2;
+	}
+
+	@keyframes pulse-animation {
+	  0% {
+		opacity: 1;
+		-webkit-transform: scale(1);
+				transform: scale(1);
+	  }
+	  50% {
+		opacity: 0;
+		-webkit-transform: scale(1.5);
+				transform: scale(1.5);
+	  }
+	  100% {
+		opacity: 0;
+		-webkit-transform: scale(1.5);
+				transform: scale(1.5);
+	  }
+	}
+	</style>
+</head>
+<body>
+
+
+
+<?php View::content() ?>
+	 
+
+    <!-- Javascript files-->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="<?=APP_PAGE_OMOLDS;?>javascript/jquery.sticky.js"></script>
+    <script src="<?=APP_PAGE_OMOLDS;?>javascript/jquery.scrollTo.min.js"></script>
+  
+    <script src="<?=APP_PAGE_OMOLDS;?>javascript/jquery.cookie.js"></script> 
+    <script src="<?=APP_PAGE_OMOLDS;?>javascript/front.js"></script> 
+	<script src="<?=APP_PAGE_OMOLDS;?>javascript/moment.min.js"></script>
+
+    
+</html>
